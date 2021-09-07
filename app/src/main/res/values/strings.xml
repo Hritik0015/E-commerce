@@ -1,0 +1,67 @@
+<resources>
+    <string name="app_name">Online Clothing</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="info_about_us">About Us</string>
+    <string name="info_locate_us">Locate Us</string>
+    <string name="description_about_us">Welcome to Online Clothing Store, your number one source for all things like T-shirt, Shirt, Trousers, Dresses and Accessories. We\'re dedicated to giving you the very best of all product, with a focus on dependability, customer service and uniqueness Founded in 2021 by Sayyed Abrar Akhtar, Online Clothing Store has come a long way from its beginnings in a Ganeshthan, Gongabu. When store first started out, his/her passion for helping other people be more eco-friendly, providing the best equipment for his colleagues drove him to], and gave him the impetus to turn hard work and inspiration into to a booming online store. We now serve customers all over Nepal and are thrilled to be a part of the eco-friendly, fair trade wing of the fashion industry. We hope you enjoy our products as much as we enjoy offering them to you. If you have any questions or comments, please don\'t hesitate to contact us. Sincerely, Sayyed Abrar, Developer</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="home">Home</string>
+    <string name="account_sign_up">New Account</string>
+    <string name="account_log_in">Login</string>
+    <string name="cart">Cart</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="all_products">All products</string>
+    <string name="product">Product</string>
+    <string name="user">User</string>
+    <string name="nav_drawer_user_name">Name</string>
+    <string name="enter_email">Enter Email Address</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="sign_up_logo">Sign up logo</string>
+    <string name="add_to_cart">Add to cart</string>
+    <string name="description"><u>Product Description &#x261F;</u></string>
+    <string name="checkout">checkout</string>
+    <string name="quantity">Quantity</string>
+    <string name="brand">Brand</string>
+    <string name="reviews"><u>Reviews &#x261F;</u></string>
+    <string name="items_in_your_cart">Items in your cart</string>
+    <string name="loading"><strong>Loading...</strong></string>
+    <string name="no_internet">No internet connection &#128532;</string>
+    <string name="add_new_product">Add new product</string>
+    <string name="add_new_category">Add new category</string>
+    <string name="all_categories">All category</string>
+    <string name="all_users">All users</string>
+    <string name="all_orders">All orders</string>
+    <string name="profile">Profile</string>
+    <string name="logout">Logout</string>
+    <string name="price">Price</string>
+    <string name="decrease_qty">Decrease qty</string>
+    <string name="increase_qty">Increase Qty</string>
+    <string name="total_price">Total price</string>
+    <string name="continue_payment">Continue payment</string>
+    <string name="order_message">
+        <strong>Thank you for shopping with us!</strong>
+        <br />
+        Our team will contact soon to inform you about the delievery details.
+        <br />
+        You can also visit our store.
+    </string>
+    <string name="shop_online">Shop online from home at your finger tips</string>
+    <string name="update">Update</string>
+    <string name="enter_product_name">Enter product name</string>
+    <string name="enter_product_price">Enter product price</string>
+    <string name="product_image">Product image</string>
+    <string name="admin">Admin</string>
+    <string name="enter_first_name">Enter First Name</string>
+    <string name="enter_last_name">Enter Last Name</string>
+    <string name="enter_contact">Enter Contact</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="enter_password_again">Enter password again</string>
+    <string name="tshirt">&#128090;</string>
+    <string name="discard">Discard</string>
+    <string name="enter_category_name">Enter category name</string>
+
+</resources>

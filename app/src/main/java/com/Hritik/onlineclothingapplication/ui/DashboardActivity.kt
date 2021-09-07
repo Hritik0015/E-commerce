@@ -1,0 +1,289 @@
+package com.Hritik.onlineclothingapplication.ui
+
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.Hritik.onlineclothingapplication.R
+import com.Hritik.onlineclothingapplication.adapter.CategoryAdapter
+import com.Hritik.onlineclothingapplication.dao.CategoryDAO
+import com.Hritik.onlineclothingapplication.database.OnlineClothingDB
+import com.Hritik.onlineclothingapplication.databinding.ActivityDashboardBinding
+import com.Hritik.onlineclothingapplication.eventlistener.OnCategoryClickListener
+import com.Hritik.onlineclothingapplication.models.Category
+import com.Hritik.onlineclothingapplication.repository.CategoryRepository
+import com.Hritik.onlineclothingapplication.response.CategoryResponse
+import com.Hritik.onlineclothingapplication.utils.Network
+import com.Hritik.onlineclothingapplication.utils.Resource
+import com.Hritik.onlineclothingapplication.utils.Status
+import com.Hritik.onlineclothingapplication.viewmodel.CategoryViewModel
+import com.Hritik.onlineclothingapplication.viewmodel.CategoryViewModelFactory
+
+
+class DashboardActivity : AppCompatActivity(), OnCategoryClickListener, SensorEventListener {
+
+    private lateinit var binding: ActivityDashboardBinding
+    private lateinit var navigationDrawerSetup: NavigationDrawerSetup
+    private lateinit var toggle: ActionBarDrawerToggle
+
+    private lateinit var sensorManager: SensorManager
+    private var sensor: Sensor? = null
+
+    private lateinit var listCategory: MutableList<Category>
+    private lateinit var adapter: CategoryAdapter
+    private lateinit var categoryViewModel: CategoryViewModel
+
+
+    private lateinit var firstNameSharedPref : String
+    private lateinit var lastNameSharedPref : String
+    private lateinit var imageSharedPref : String
+    private lateinit var contactSharedPref : String
+    private  var isAdminSharedPref : Boolean = false
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_dashboard)
+
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard)
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
+
+        /*----------------------------------------SHARED PREFERENCES----------------------------------------------*/
+        getSharedPref()
+
+        /*---------------------------------------HAMBURGER MENU BAR TOGGLE----------------------------------------*/
+        setSupportActionBar(binding.toolbar)
+        toggle = ActionBarDrawerToggle(
+            this@DashboardActivity,
+            binding.drawer,
+            binding.toolbar,
+            R.string.open,
+            R.string.close
+        )
+        binding.drawer.addDrawerListener(toggle)
+        toggle.syncState()
+
+        /*----------------------------------------NAVIGATION DRAWER LAYOUT----------------------------------------*/
+        navigationDrawerSetup = NavigationDrawerSetup()
+        navigationDrawerSetup.navDrawerLayoutInitialization(
+            binding.tvToolbarTitle,
+            "Online Clothing"
+        )
+        navigationDrawerSetup.addHeaderText(
+            this@DashboardActivity,
+            binding.navigationView,
+            "$firstNameSharedPref $lastNameSharedPref",
+            "$contactSharedPref",
+            "$imageSharedPref"
+        )
+        navigationDrawerSetup.addEventListenerToNavItems(
+            this@DashboardActivity,
+            binding.navigationView,
+            isAdminSharedPref
+        )
+
+        setupUI()
+
+        setupViewModel()
+
+        /*---------------------------------------SENSORS----------------------------------------------------------*/
+        if(!checkLightSensor()) {
+            return
+        } else {
+            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT)
+            sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL)
+        }
+
+        /*----------------------------------------ASK FOR PERMISSIONS---------------------------------------------*/
+        if (!hasPermission()) {
+            requestPermission()
+        }
+
+        when (Network.isNetworkAvailable(this@DashboardActivity)) {
+            true -> setupCategoryObservers()
+            false -> {
+                Toast.makeText(
+                    this@DashboardActivity,
+                    "No internet connection!!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                try {
+                    loadCategoryFromRoom()
+                } catch (ex: Exception) {
+                    println("Error loading category data from database. ==> $ex")
+                }
+            }
+        }
+    }
+
+
+
+
+
+    /*----------------------------------EVENT LISTENER ON CATEGORY ITEM CLICK-------------------------------------*/
+    override fun OnCategoryItemClick(position: Int, categoryName: String, categoryId: String) {
+        val intent = Intent(this, ProductActivity::class.java)
+        intent.putExtra("categoryName", categoryName)
+        intent.putExtra("categoryId", categoryId)
+        startActivity(intent)
+    }
+
+
+    /*----------------------------------LIGHT SENSOR---------------------------------------------------------*/
+    override fun onSensorChanged(event: SensorEvent?) {
+       val values = event!!.values[0]
+        if(values <= 1000 ){
+            binding.recyclerViewCategory.setBackgroundColor(0xFF222222.toInt())
+        } else {
+            binding.recyclerViewCategory.setBackgroundColor(Color.WHITE)
+        }
+    }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+    }
+
+    private fun checkLightSensor(): Boolean {
+        var flag = true
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT) == null) {
+             flag = false
+        }
+        return flag
+    }
+
+    /*-------------------------------------REQUEST PERMISSIONS----------------------------------------------------*/
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this@DashboardActivity,
+            permissions, 234
+        )
+    }
+
+    /*-------------------------------------CHECK Permissions------------------------------------------------------*/
+    private fun hasPermission(): Boolean {
+        var hasPermission = true
+        for (permission in permissions) {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                hasPermission = false
+            }
+        }
+        return hasPermission
+    }
+
+    /*-------------------------------------ASK PERMISSIONS--------------------------------------------------------*/
+    private val permissions = arrayOf(
+        android.Manifest.permission.CAMERA,
+        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        android.Manifest.permission.ACCESS_FINE_LOCATION
+    )
+
+    /*----------------------------GET SHARED PREFERENCES---------------------------------------------------------*/
+    private fun getSharedPref() {
+        val sharedPref = getSharedPreferences("LoginPreference", MODE_PRIVATE)
+        firstNameSharedPref = sharedPref.getString("firstName", "").toString()
+        lastNameSharedPref = sharedPref.getString("lastName", "").toString()
+        imageSharedPref = sharedPref.getString("image", "").toString()
+        contactSharedPref = sharedPref.getString("contact", "").toString()
+        isAdminSharedPref = sharedPref.getBoolean("isAdmin", false)
+    }
+
+
+    /*---------------------------------------------SET UP UI------------------------------------------------------*/
+    private fun setupUI() {
+        binding.recyclerViewCategory.layoutManager =LinearLayoutManager(this@DashboardActivity)
+        listCategory = mutableListOf()
+        adapter =CategoryAdapter(this, listCategory, this)
+        binding.recyclerViewCategory.adapter = adapter
+    }
+
+    /*--------------------------------------------SET UP VIEW MODEL-----------------------------------------------*/
+    private fun setupViewModel() {
+        val categoryDAO: CategoryDAO = OnlineClothingDB.getInstance(application).categoryDAO
+        val repository =  CategoryRepository(categoryDAO)
+        val factory = CategoryViewModelFactory(repository)
+        categoryViewModel = ViewModelProvider(this, factory).get(CategoryViewModel::class.java)
+        categoryViewModel.insertCategoryIntoRoom()
+    }
+
+
+    /*-------------------------------------GET DATA FROM ROOM TO DISPLAY------------------------------------------*/
+    private fun loadCategoryFromRoom() {
+        try {
+            categoryViewModel.categoryFromRoom.observe(this@DashboardActivity, {
+                it?.let { category ->
+                    binding.progressBar.visibility = View.GONE
+                    binding.recyclerViewCategory.visibility = View.VISIBLE
+                    listCategory.clear()
+                    listCategory.addAll(category)
+                    adapter.notifyDataSetChanged()
+                    Log.i("CategoryTAG", "==>LOADED CATEGORY DATA FROM ROOM")
+                    println(category)
+                }
+            })
+        } catch (ex: Exception) {
+            println(ex)
+        }
+    }
+
+    /*-------------------------------------SET DATA FROM API TO DISPLAY-------------------------------------------*/
+    private fun setupCategoryObservers() {
+        categoryViewModel.getCategory().observe(this, {
+            it.loadApiData()
+        })
+    }
+
+    /*-------------------------------------GET DATA FROM API------------------------------------------------------*/
+    private fun Resource<CategoryResponse>.loadApiData() {
+        let { resource ->
+            when (resource.status ) {
+                Status.SUCCESS -> {
+                    binding.progressBar.visibility = View.GONE
+                    binding.recyclerViewCategory.visibility = View.VISIBLE
+
+                    resource.data?.let { category ->
+                        listCategory.clear()
+                        listCategory.addAll(category.category)
+                        adapter.notifyDataSetChanged()
+                        println(category)
+                        Log.i("CategoryTAG", "==>LOADED CATEGORY DATA FROM API")
+                    }
+                }
+                Status.ERROR -> {
+                    binding.recyclerViewCategory.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.GONE
+                    println("=========================ERROR====================")
+                    println(resource.data)
+                    println(resource.message)
+                    println("==================================================")
+                }
+                Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                    binding.recyclerViewCategory.visibility = View.GONE
+                    println("=========================LOADER====================")
+                    println("!!! LOADING... !!!")
+                    println("===================================================")
+                }
+
+            }
+        }
+    }
+
+
+}

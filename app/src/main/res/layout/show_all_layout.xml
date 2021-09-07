@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#eee"
+        android:saveEnabled="false"
+        tools:context=".ui.ShowAllActivity">
+
+        <ImageView
+            android:id="@+id/imgProductItem"
+            android:layout_width="100dp"
+            android:layout_height="110dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="33dp"
+            android:lines="2"
+            android:maxLines="2"
+            android:text="Product title"
+            android:textColor="#333"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tvItemQty"
+            app:layout_constraintEnd_toStartOf="@+id/ivItemEdit"
+            app:layout_constraintStart_toEndOf="@+id/imgProductItem"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tvItemQty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="100"
+            android:textAllCaps="true"
+            android:textColor="#333"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivItemEdit"
+            app:layout_constraintStart_toEndOf="@+id/imgProductItem"
+            app:layout_constraintTop_toBottomOf="@+id/tvItemName" />
+
+        <ImageView
+            android:id="@+id/ivItemEdit"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:src="@drawable/icon_edit"
+            app:layout_constraintBottom_toTopOf="@+id/ivItemDelete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivItemDelete"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:src="@drawable/icon_delete"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivItemEdit" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

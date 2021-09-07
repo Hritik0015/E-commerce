@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="productViewModel"
+            type="com.Hritik.onlineclothingapplication.viewmodel.ProductViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="true"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:context=".ui.ProductDetailActivity">
+
+            <ImageView
+                android:id="@+id/imgProduct"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:scaleType="centerCrop"
+                android:contentDescription="@{}" />
+
+            <TextView
+                android:id="@+id/tvProductTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin= "15dp"
+                android:fontFamily="@font/rubik_bold"
+                android:letterSpacing="0.05"
+                android:textColor="#333"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                tools:targetApi="lollipop" />
+
+            <RatingBar
+                android:id="@+id/ratingBarProduct"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="25dp"
+                android:numStars="5"
+                android:progressTint="#DAA520"/>
+
+            <TextView
+                android:layout_width="130dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:background="#333"
+                android:fontFamily="@font/rubik_medium"
+                android:letterSpacing="0.05"
+                android:paddingStart="4dp"
+                android:paddingLeft="4dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="2dp"
+                android:text="@string/price"
+                android:textColor="#eee"
+                android:textSize="19sp"
+                tools:targetApi="lollipop" />
+
+            <TextView
+                android:id="@+id/tvProductPrice"
+                android:fontFamily="@font/rubik_bold"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:layout_height="35dp"
+                android:layout_marginTop="-46dp"
+                android:layout_marginStart="155dp"
+                android:layout_marginLeft="155dp"
+                android:layout_marginBottom="20dp"
+                android:letterSpacing="0.05"
+                android:textColor="#333"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                tools:targetApi="lollipop" />
+
+            <TextView
+                android:layout_width="130dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:background="#333"
+                android:letterSpacing="0.05"
+                android:paddingStart="4dp"
+                android:paddingLeft="4dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="2dp"
+                android:text="@string/brand"
+                android:gravity="center"
+                android:fontFamily="@font/rubik_medium"
+                android:textColor="#eee"
+                android:textSize="19sp"
+                tools:targetApi="lollipop"/>
+
+            <TextView
+                android:id="@+id/tvProductBrand"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="-37dp"
+                android:layout_marginStart="155dp"
+                android:layout_marginLeft="155dp"
+                android:layout_marginBottom="20dp"
+                android:letterSpacing="0.05"
+                android:paddingStart="4dp"
+                android:paddingLeft="4dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="2dp"
+                android:fontFamily="@font/rubik_bold"
+                android:textColor="#333"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                tools:targetApi="lollipop"/>
+
+            <TextView
+                android:layout_width="130dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:background="#333"
+                android:letterSpacing="0.05"
+                android:paddingStart="4dp"
+                android:paddingLeft="4dp"
+                android:paddingTop="2dp"
+                android:paddingEnd="4dp"
+                android:paddingRight="4dp"
+                android:paddingBottom="2dp"
+                android:text="@string/quantity"
+                android:gravity="center"
+                android:fontFamily="@font/rubik_medium"
+                android:textColor="#eee"
+                android:textSize="19sp"
+                tools:targetApi="lollipop"/>
+
+            <ImageView
+                android:id="@+id/imgDecreaseQty"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="155dp"
+                android:layout_marginLeft="155dp"
+                android:layout_marginTop="-35dp"
+                android:background="#eee"
+                android:backgroundTint="#eee"
+                android:src="@drawable/remove"
+                tools:targetApi="lollipop"
+                android:contentDescription="@string/decrease_qty" />
+
+            <TextView
+                android:id="@+id/tvQty"
+                android:layout_width="45dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="185dp"
+                android:layout_marginStart="185dp"
+                android:layout_marginTop="-36dp"
+                android:gravity="center"
+                android:textColor="#000"
+                android:fontFamily="@font/rubik_bold"
+                android:src="@drawable/add"/>
+
+            <ImageView
+                android:id="@+id/imgIncreaseQty"
+                android:layout_width="35dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="230dp"
+                android:layout_marginLeft="230dp"
+                android:layout_marginTop="-36dp"
+                android:layout_marginBottom="25dp"
+                android:background="#eee"
+                android:backgroundTint="#333"
+                android:src="@drawable/add"
+                tools:targetApi="lollipop"
+                android:contentDescription="@string/increase_qty" />
+            
+
+            <Button
+                android:id="@+id/btnAddToCart"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="155dp"
+                android:backgroundTint="#eee"
+                android:text="@string/add_to_cart"
+                android:textColor="#333"
+                android:textSize="19sp"
+                android:fontFamily="@font/rubik_bold"
+                tools:targetApi="lollipop"/>
+
+            <Button
+                android:id="@+id/btnCheckout"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="210dp"
+                android:layout_marginLeft="200dp"
+                android:layout_marginTop="-50dp"
+                android:gravity="center"
+                android:backgroundTint="#333"
+                android:text="@string/checkout"
+                android:textColor="#eee"
+                android:textSize="19sp"
+                android:fontFamily="@font/rubik_bold"
+                tools:targetApi="lollipop"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tvProductDescriptionToggle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="15dp"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="4dp"
+                android:letterSpacing="0.05"
+                android:text="@string/description"
+                android:backgroundTint="#333"
+                android:background="#333"
+                android:gravity="center"
+                android:fontFamily="@font/rubik_medium"
+                android:textColor="#eee"
+                android:textSize="19sp"
+                tools:targetApi="lollipop"/>
+
+            <TextView
+                android:id="@+id/tvProductDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:letterSpacing="0.075"
+                android:lineSpacingExtra="5dp"
+                android:textColor="#333"
+                android:textSize="17sp"
+                android:visibility="gone"
+                tools:targetApi="lollipop"/>
+
+            <TextView
+                android:id="@+id/tvProductReviewToggle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="25dp"
+                android:paddingStart="8dp"
+                android:paddingLeft="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="4dp"
+                android:letterSpacing="0.05"
+                android:text="@string/reviews"
+                android:backgroundTint="#333"
+                android:background="#333"
+                android:gravity="center"
+                android:fontFamily="@font/rubik_medium"
+                android:textColor="#eee"
+                android:textSize="19sp"
+                tools:targetApi="lollipop"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewReviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-25dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="25dp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </ScrollView>
+</layout>
